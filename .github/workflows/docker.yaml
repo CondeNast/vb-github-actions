@@ -8,8 +8,6 @@ on:
         required: true
       QUAY_TOKEN:
         required: true
-      PROJECT_NAME: 
-        required: true
 
 jobs:
     build_docker_image:

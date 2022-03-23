@@ -1,0 +1,36 @@
+name: build docker image
+on:
+  workflow_call:
+    secrets:
+      NPM_TOKEN:
+        required: true
+      QUAY_USER:
+        required: true
+      QUAY_TOKEN:
+        required: true
+      PROJECT_NAME: 
+        required: true
+
+jobs:
+    build_docker_image:
+      name: build docker image
+      env:
+        PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
+      runs-on: ubuntu-latest
+      container:
+        image: quay.io/condenastinternational/lit-build:1-18.09.9
+        credentials:
+          username: ${{ secrets.QUAY_USER }}
+          password: ${{ secrets.QUAY_TOKEN }}
+      steps:
+        - uses: actions/checkout@v2
+        - name: docker login
+          uses: docker/login-action@v1
+          with:
+            registry: quay.io
+            username: ${{ secrets.QUAY_USER }}
+            password: ${{ secrets.QUAY_TOKEN }}
+        - name: Build the Docker image
+          run: |
+            set -euxo pipefail
+            docker build --build-arg=NPM_TOKEN=${{secrets.NPM_TOKEN}} --build-arg=NODE_CONFIG_ENV=staging --build-arg=PLATFORM=staging -t ${{secrets.PROJECT_NAME}} .

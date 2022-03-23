@@ -15,7 +15,7 @@ jobs:
     build_docker_image:
       name: build docker image
       env:
-        PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
+        PROJECT_NAME:  ${{ github.event.repository.name }}
       runs-on: ubuntu-latest
       container:
         image: quay.io/condenastinternational/lit-build:1-18.09.9
@@ -33,4 +33,4 @@ jobs:
         - name: Build the Docker image
           run: |
             set -euxo pipefail
-            docker build --build-arg=NPM_TOKEN=${{secrets.NPM_TOKEN}} --build-arg=NODE_CONFIG_ENV=staging --build-arg=PLATFORM=staging -t ${{secrets.PROJECT_NAME}} .
+            docker build --build-arg=NPM_TOKEN=${{secrets.NPM_TOKEN}} --build-arg=NODE_CONFIG_ENV=staging --build-arg=PLATFORM=staging -t ${{env.PROJECT_NAME}} .

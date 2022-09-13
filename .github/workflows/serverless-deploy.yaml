@@ -29,10 +29,10 @@ jobs:
   deploy:
     name: deploy serverless stack
     runs-on: ubuntu-latest
-    environment: ${{inputs.custom_env}}
+    environment: dev
     steps:
       - uses: actions/checkout@v2
-      - name: serverless deploy to ${{inputs.env}}
+      - name: ${{inputs.env}}
         uses: serverless/github-action@v3
         with:
           args: -c "echo '//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}' > ~/.npmrc && yarn install --ignore-engines && sls config credentials --provider aws --key "$AWS_ACCESS_KEY_ID" --secret "$AWS_SECRET_ACCESS_KEY" --profile ${{inputs.env}} && sls deploy --stage ${{inputs.env}}"

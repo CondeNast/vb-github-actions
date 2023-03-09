@@ -35,7 +35,5 @@ jobs:
         run: yarn run start:mock &
       - name: start web server
         run: SERVER_SSL=true CONFIG_SERVICE_MOCK_FILE=__mocks__/mockConfig.json CONFIG_SERVICE_MOCK=true NODE_ENV=production NODE_CONFIG_ENV=test node server.js &
-        env:
-          PORT: ${{ secrets.PORT }}
       - name: end to end tests
         run: ${{secrets.CYPRESS_RUN}}

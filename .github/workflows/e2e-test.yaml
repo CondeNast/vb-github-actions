@@ -13,15 +13,14 @@ jobs:
     name: run end to end test cases
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-node-modules
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.npm
-          key: ${{ github.event.repository.name }}-packages-v1
+          node-version-file: '.nvmrc'
+          registry-url: https://registry.npmjs.org/
+          cache: 'npm'
+      - run: node -v
       - name: Install Dependencies
         run: |
           set -euxo pipefail

@@ -19,12 +19,9 @@ jobs:
           path: ~/.npm
           key:  ${{ github.event.repository.name }}-packages-v1
       - name: Install Dependencies
-        run: |
-          set -euxo pipefail
-          echo "//registry.npmjs.org/:_authToken=${{secrets.NPM_TOKEN}}" > ~/.npmrc
-          yarn config set cache-folder ~/.cache/yarn
-          yarn install --pure-lockfile --ignore-engines
-          rm ~/.npmrc
+        run: yarn install --pure-lockfile --ignore-engines
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
       - name: NPM Audit Test
         run: /bin/sh -c 'yarn audit --level high; [[ $? -ge 8 ]] && exit 1 || exit 0'
       - name: Unit tests

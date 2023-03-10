@@ -23,12 +23,9 @@ jobs:
           cache: 'npm'
       - run: node -v
       - name: Install Dependencies
-        run: |
-          set -euxo pipefail
-          echo "//registry.npmjs.org/:_authToken=${{secrets.NPM_TOKEN}}" > ~/.npmrc
-          yarn config set cache-folder ~/.cache/yarn
-          yarn install --pure-lockfile --ignore-engines
-          rm ~/.npmrc
+        run: yarn install --pure-lockfile --ignore-engines
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
       - name: build the application
         run: NODE_CONFIG_ENV=test yarn run build
       - name: start mock server
